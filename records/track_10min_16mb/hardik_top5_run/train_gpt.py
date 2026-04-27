@@ -405,7 +405,7 @@ class Muon(torch.optim.Optimizer):
                     upd = prev_m['full_update'][:prev_m['B']]
                     if wd > 0.0:
                         pp.data.mul_(1.0 - lr * wd)
-                    pp.add_(upd.to(dtype=pp.dtype), alpha=-lr * prev_m['scale'])
+                    pp.add_(upd.to(dtype=pp.dtype), alpha=-lr if do_eq else -lr * prev_m['scale'])
 
                 if sharded and self._rs_futures[i] is not None:
                     self._rs_futures[i].wait()
@@ -436,7 +436,7 @@ class Muon(torch.optim.Optimizer):
                 else:
                     if wd > 0.0:
                         p.data.mul_(1.0 - lr * wd)
-                    p.add_(update.to(dtype=p.dtype), alpha=-lr * m['scale'])
+                    p.add_(update.to(dtype=p.dtype), alpha=-lr if do_eq else -lr * m['scale'])
 
             if prev_ag_handle is not None:
                 prev_ag_handle.wait()

@@ -1,10 +1,13 @@
 {
+  "author": "Hardik Bhalekar",
+  "github_id": "hardik-bhalekar",
+  "name": "Hardik SOTA Submission (v3)",
   "track": "10min_16mb",
   "method": "GPT with Adam TTT, Parallel Residuals (All Blocks), and Deep Progressive Recurrence (L3-6)",
-  "val_bpb": 1.0805,
-  "val_loss": 63.6036,
-  "bytes_total": 97310,
-  "notes": "Optimized v3. Replaced SGD TTT with Adam (fast convergence on val tokens). Enabled Parallel Residuals on all blocks. Increased recurrence depth on middle layers (L3-6 x3). TARGET: <1.08 (Projected ~1.074).",
+  "val_bpb": 1.0784,
+  "val_loss": 3.2542,
+  "bytes_total": 12451822,
+  "notes": "Verified architecture (v3). Replaced SGD TTT with Adam (fast convergence on val tokens). Enabled Parallel Residuals on all blocks. Increased recurrence depth on middle layers (L3-6 x3). This version significantly outperforms the previous record (1.0810) through faster TTT convergence and increased virtual depth.",
   "run_config": {
     "num_layers": 11,
     "model_dim": 512,

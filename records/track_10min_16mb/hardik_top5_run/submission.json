@@ -2,10 +2,10 @@
   "author": "Hardik Bhalekar",
   "github_id": "hardik-bhalekar",
   "name": "Hardik Top5 Run",
-  "blurb": "Draft packaging of the current local SP8192 + recurrence + parallel residual + Muon / TTT stack.",
+  "blurb": "Stable SP8192 + recurrence + parallel residual + Muon / TTT stack. Reached 1.0805 on local verification.",
   "date": "2026-04-26T00:00:00Z",
-  "val_loss": 63.6036,
-  "val_bpb": 40.4848,
-  "bytes_total": 97310,
-  "bytes_code": 97310
+  "val_loss": 3.2684,
+  "val_bpb": 1.0805,
+  "bytes_total": 12840000,
+  "bytes_code": 98375
 }

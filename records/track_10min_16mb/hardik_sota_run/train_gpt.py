@@ -24,7 +24,8 @@ except ImportError:
         return y.transpose(1, 2)
 
 class Hyperparameters:
-    data_dir = os.environ.get('DATA_DIR', './data/')
+    repo_root = Path(__file__).resolve().parents[3]
+    data_dir = os.environ.get('DATA_DIR', str(repo_root / 'data'))
     seed = int(os.environ.get('SEED', 1337))
     run_id = os.environ.get('RUN_ID', str(uuid.uuid4()))
     iterations = int(os.environ.get('ITERATIONS', 4500)) # SOTA uses ~4550
