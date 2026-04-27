@@ -1,22 +1,27 @@
-# Hardik SOTA Run
+# SOTA Attempt: Adam TTT + Deep Progressive Recurrence
 
-This submission implements a high-performance configuration designed to push the frontier of the 16MB / 10-minute track in the Parameter Golf challenge.
+This submission implements aggressive optimizations to break the 1.08 BPB barrier on the 10-min / 16MB track.
 
-## Techniques
+## Key Optimizations
 
-- **SP8192 Tokenizer**: Uses the 8192-vocab tokenizer for superior compression on the FineWeb dataset compared to the baseline 1024-vocab version.
-- **Depth Recurrence (L3-5)**: Layers 3 through 5 are executed twice per forward pass, effectively increasing the model's depth without adding to the parameter count or artifact size.
-- **Parallel Residuals**: Processing Attention and MLP in parallel allows for a wider model within the same latency budget, improving representational capacity.
-- **Muon Optimizer**: Utilizing the Muon optimizer for matrix parameters, which has shown significant gains in training speed and convergence for constrained runs.
-- **Legal Score-First TTT**: Test-time training is applied during evaluation, specifically using the "score-first" approach which is compliant with the challenge rules (only training on tokens already evaluated).
-- **GPTQ + SDClip**: Post-training quantization using GPTQ with Standard Deviation Clipping (SDClip) to maximize information density in the 16MB artifact.
+1. **Adam Test-Time Training (Adam TTT)**:
+   - Replaced standard SGD for TTT with Adam.
+   - Faster convergence on the sparse validation tokens encountered during evaluation.
+   - Complies with Rule 198 (only trains on tokens already evaluated).
 
-## Performance Target
+2. **Parallel Residuals (Global)**:
+   - Enabled Parallel Residuals (Attention and MLP computed in parallel) for ALL 11 layers.
+   - Improves signal flow and training stability at high learning rates.
 
-This configuration targets a `val_bpb` of approximately **1.0805**, which would place it at the top of the leaderboard.
+3. **Deep Progressive Recurrence**:
+   - Implements 3 extra loops on middle layers (L3 through L6).
+   - Effectively increases the virtual depth of the model to 15 layers while staying within the 11-layer physical parameter limit.
+   - `enable_looping_at = 0.4` to preserve time budget for initial training.
 
-## Compliance
+4. **Tuned Muon Backend**:
+   - Increased Muon backend steps to 6 for better orthogonality.
+   - Initial `qk_gain` set to 5.5 for stronger attention signal in the early phase.
 
-- **Training Time**: Optimized to complete in under 600 seconds on 8xH100 GPUs.
-- **Artifact Size**: Artifact is managed to stay comfortably under the 16,000,000 byte limit through efficient quantization and Brotli compression of the state dictionary.
-- **Reproducibility**: Script is fully self-contained and reproducible across multiple seeds.
+## Target Metrics
+- **Target BPB**: < 1.08 (Verified run needed on 8xH100)
+- **Status**: Smoke-tested on CPU; ready for GPU cluster execution.

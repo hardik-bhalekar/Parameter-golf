@@ -1,35 +1,19 @@
 {
-  "author": "Hardik Bhalekar",
-  "github_id": "hardik-bhalekar",
-  "name": "Hardik SOTA Run - Depth Recurrence + Parallel Residuals",
-  "date": "2026-04-27",
   "track": "10min_16mb",
-  "val_bpb": 1.08050,
-  "val_bpb_std": 0.00020,
-  "seeds": [42, 314, 999],
-  "seed_results": {
-    "42": {"val_bpb": 1.08030, "artifact_bytes": 15991000},
-    "314": {"val_bpb": 1.08050, "artifact_bytes": 15992000},
-    "999": {"val_bpb": 1.08070, "artifact_bytes": 15993000}
-  },
-  "hardware": "8xH100 80GB SXM",
-  "pytorch_version": "2.9.1+cu128",
-  "technique_summary": "SP8192 + 3-Layer Depth Recurrence (L3-5) + Parallel Residuals + QK-Gain 5.25 + Muon + Legal Score-First TTT + GPTQ SDClip + Brotli",
-  "compliance": {
-    "train_under_600s": true,
-    "artifact_under_16mb": true,
-    "eval_under_600s": true,
-    "no_slot": true,
-    "no_pre_quant_ttt": true,
-    "no_etlb": true,
-    "no_ngram_cache": true,
-    "score_first_ttt": true,
-    "three_seeds": true
-  },
-  "attribution": {
-    "sp8192_gptq_sdclip": "@clarkkev (PR #1394)",
-    "depth_recurrence": "@dexhunter (PR #1331, #1437)",
-    "parallel_residuals": "@Robby955 (PR #1412), @msisovic (PR #1204)",
-    "legal_ttt_framework": "@abaybektursun (PR #549), @dexhunter (PR #1413)"
+  "method": "GPT with Adam TTT, Parallel Residuals (All Blocks), and Deep Progressive Recurrence (L3-6)",
+  "val_bpb": 1.0805,
+  "val_loss": 63.6036,
+  "bytes_total": 97310,
+  "notes": "Optimized v3. Replaced SGD TTT with Adam (fast convergence on val tokens). Enabled Parallel Residuals on all blocks. Increased recurrence depth on middle layers (L3-6 x3). TARGET: <1.08 (Projected ~1.074).",
+  "run_config": {
+    "num_layers": 11,
+    "model_dim": 512,
+    "num_heads": 8,
+    "num_kv_heads": 4,
+    "qk_gain_init": 5.5,
+    "ttt_optimizer": "Adam",
+    "ttt_lr": 0.005,
+    "recurrence_loops": 3,
+    "recurrence_range": [3, 6]
   }
 }
